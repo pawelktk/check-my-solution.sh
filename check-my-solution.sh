@@ -32,7 +32,7 @@ for ((i = 1; i <= number_of_lines + 1; i++)); do
 	elif [[ "$current_line" =~ [[]TEST' '[0-9]+[]] ]] || ((i == number_of_lines + 1)); then
 		mode="test"
 		if ((is_first == 0 || i == number_of_lines + 1)); then
-			input="$(echo "$input" | tr '\n' ' ' | tr -s '[:blank:]' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+			#input="$(echo "$input" | tr '\n' ' ' | tr -s '[:blank:]' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 			output="$(echo "$output" | tr '\n' ' ' | tr -s '[:blank:]' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 			finished_gracefuly=0
 			if actual_output="$(timeout $time_limit echo "$input" | "$executable" | tr '\n' ' ' | tr -s '[:blank:]' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"; then
@@ -77,7 +77,8 @@ for ((i = 1; i <= number_of_lines + 1; i++)); do
 		fi
 
 	elif [[ "$mode" == "in" ]]; then
-		input+=" $current_line "
+		input+="$current_line"
+		input+=$'\n'
 	elif [[ "$mode" == "out" ]]; then
 		output+=" $current_line "
 	elif [[ "$mode" == "test" ]]; then
